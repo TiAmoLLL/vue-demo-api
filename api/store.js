@@ -1,7 +1,8 @@
 const express = require('express')
 const router = express.Router()
 let conn = require('../common/conn')
-router.get('/getList',(req, res) => {
+const tokenAuth = require('../config/tokenAuto')
+router.get('/getList',tokenAuth,(req, res) => {
     
     let {page,limit} = req.query
     if(page){
@@ -17,7 +18,7 @@ router.get('/getList',(req, res) => {
     })
 })
 // 总数
-router.get('/getTotal',(req, res) => {
+router.get('/getTotal',tokenAuth,(req, res) => {
     const sql = `select count(*) from store`
     conn.query(sql, (error, results) => {
         if (error) return res.json({ code: 10001, message: error})
@@ -25,7 +26,7 @@ router.get('/getTotal',(req, res) => {
     })
 })
 // 模糊查询门店
-router.get('/getStoreName',(req, res) => {
+router.get('/getStoreName',tokenAuth,(req, res) => {
     
     let {page,limit,name} = req.query
     if(page){
@@ -56,7 +57,7 @@ router.get('/getStoreName',(req, res) => {
 }
  */
 // 添加food
-router.post('/addStore', (req, res) => {
+router.post('/addStore',tokenAuth, (req, res) => {
     let {bianma,mdName,quyu,address,tel,date,people,state} = req.body
     console.log(bianma,mdName,quyu,address,tel,date,people,state);
     const sql = `insert into store values(null,'${bianma}','${mdName}','${quyu}','${address}','${tel}','${date}',${people},'${state}')`
@@ -67,7 +68,7 @@ router.post('/addStore', (req, res) => {
     })
 })
 // 删除
-router.post('/deleteStore',(req,res)=>{
+router.post('/deleteStore',tokenAuth,(req,res)=>{
     let {id} = req.body
     console.log(id);
     const sql = `delete from store where id=${id}`
@@ -79,7 +80,7 @@ router.post('/deleteStore',(req,res)=>{
 })
 
 // 修改
-router.post('/editStore',(req,res)=>{
+router.post('/editStore',tokenAuth,(req,res)=>{
     console.log('测试');
     console.log(req.body);
     // res.send(req.body)

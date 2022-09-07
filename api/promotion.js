@@ -1,10 +1,11 @@
 const express = require('express')
 const router = express.Router()
 let conn = require('../common/conn')
+const tokenAuth = require('../config/tokenAuto')
 
 // 促销
 
-router.get('/getList',(req, res) => {
+router.get('/getList',tokenAuth,(req, res) => {
     
     let {page,limit} = req.query
     if(page){
@@ -20,7 +21,7 @@ router.get('/getList',(req, res) => {
     })
 })
 // 总数
-router.get('/getTotal',(req, res) => {
+router.get('/getTotal',tokenAuth,(req, res) => {
     const sql = `select count(*) from promotion`
     conn.query(sql, (error, results) => {
         if (error) return res.json({ code: 10001, message: error})
@@ -39,7 +40,7 @@ router.get('/getTotal',(req, res) => {
 },
  */
 // 添加
-router.post('/addPromotion', (req, res) => {
+router.post('/addPromotion',tokenAuth, (req, res) => {
     let {cxname,ksdate,jsdate,people,zddate,zhuangtai,foodname,cxType,originPrice,discount} = req.body
     // console.log(imgUrl,foodname,foodprice,foodkind,kouwei,number);
     const sql = `insert into promotion values(null,'${cxname}','${ksdate}','${jsdate}','${people}','${zddate}',${zhuangtai},'${foodname}','${cxType}',${originPrice},${discount})`
@@ -50,7 +51,7 @@ router.post('/addPromotion', (req, res) => {
     })
 })
 // 删除
-router.post('/deletePromotion',(req,res)=>{
+router.post('/deletePromotion',tokenAuth,(req,res)=>{
     let {id} = req.body
     console.log(id);
     const sql = `delete from promotion where id=${id}`
@@ -62,7 +63,7 @@ router.post('/deletePromotion',(req,res)=>{
 })
 
 // 修改
-router.post('/editPromotion',(req,res)=>{
+router.post('/editPromotion',tokenAuth,(req,res)=>{
     console.log('测试');
     console.log(req.body);
     // res.send(req.body)
@@ -77,7 +78,7 @@ router.post('/editPromotion',(req,res)=>{
     })
 })
 // 修改状态
-router.post('/editPromotionState',(req,res)=>{
+router.post('/editPromotionState',tokenAuth,(req,res)=>{
     console.log('测试');
     console.log(req.body);
     // res.send(req.body)

@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
 let conn = require('../common/conn')
+const tokenAuth = require('../config/tokenAuto')
 
-router.get('/getList',(req, res)=>{
+router.get('/getList',tokenAuth,(req, res)=>{
     // let {page,limit} = req.query
     // page = (page-1)*limit
     // console.log(str);
@@ -23,7 +24,7 @@ router.get('/getList',(req, res)=>{
 "tel": "18155315236",
 "name": "邹超"
  */
-router.post('/editBusiness',(req,res)=>{
+router.post('/editBusiness',tokenAuth,(req,res)=>{
     console.log('测试');
     console.log(req.body);
     // res.send(req.body)

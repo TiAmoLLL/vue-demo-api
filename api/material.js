@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 let conn = require('../common/conn')
-
+const tokenAuth = require('../config/tokenAuto')
 router.get('/getList',(req, res) => {
     
     let {page,limit} = req.query
@@ -18,7 +18,7 @@ router.get('/getList',(req, res) => {
     })
 })
 // 模糊查询菜品
-router.get('/getMaterialName',(req, res) => {
+router.get('/getMaterialName',tokenAuth,(req, res) => {
     
     let {page,limit,name} = req.query
     if(page){

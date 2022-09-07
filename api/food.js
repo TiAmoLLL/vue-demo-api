@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 let conn = require('../common/conn')
 const tokenAuth = require('../config/tokenAuto')
-router.get('/getList',(req, res) => {
+router.get('/getList',tokenAuth,(req, res) => {
     
     let {page,limit} = req.query
     if(page){
@@ -19,7 +19,7 @@ router.get('/getList',(req, res) => {
     })
 })
 // 模糊查询菜品
-router.get('/getFoodName',(req, res) => {
+router.get('/getFoodName',tokenAuth,(req, res) => {
     
     let {page,limit,name} = req.query
     if(page){
@@ -36,7 +36,7 @@ router.get('/getFoodName',(req, res) => {
         res.json({ code: 200, data: results})
     })
 })
-router.get('/getFoodId',(req, res) => {
+router.get('/getFoodId',tokenAuth,(req, res) => {
     
     let {id} = req.query
     const sql = `SELECT * FROM food where id like '${id}'`
@@ -59,7 +59,7 @@ router.get('/getFoodId',(req, res) => {
 //     })
 // })
 // 总数
-router.get('/getTotal',(req, res) => {
+router.get('/getTotal',tokenAuth,(req, res) => {
     const sql = `select count(*) from food`
     conn.query(sql, (error, results) => {
         if (error) return res.json({ code: 10001, message: error})
@@ -67,7 +67,7 @@ router.get('/getTotal',(req, res) => {
     })
 })
 // 添加food
-router.post('/addFood', (req, res) => {
+router.post('/addFood',tokenAuth, (req, res) => {
     let {imgUrl,foodname,foodprice,foodkind,kouwei,number,minnumber,maxnumber,zhuangtai} = req.body
     console.log(imgUrl,foodname,foodprice,foodkind,kouwei,number);
     const sql = `insert into food values(null,'${imgUrl}','${foodname}',${foodprice},'${foodkind}','${kouwei}',${number},${minnumber},${maxnumber},'${zhuangtai}')`
@@ -78,7 +78,7 @@ router.post('/addFood', (req, res) => {
     })
 })
 // 删除
-router.post('/deleteFood',(req,res)=>{
+router.post('/deleteFood',tokenAuth,(req,res)=>{
     let {id} = req.body
     console.log(id);
     const sql = `delete from food where id=${id}`
@@ -90,7 +90,7 @@ router.post('/deleteFood',(req,res)=>{
 })
 
 // 修改
-router.post('/editFood',(req,res)=>{
+router.post('/editFood',tokenAuth,(req,res)=>{
     console.log('测试');
     console.log(req.body);
      let {id,imgUrl,foodname,foodprice,foodkind,kouwei,number,minnumber,maxnumber,zhuangtai} = req.body;

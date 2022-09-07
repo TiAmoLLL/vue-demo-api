@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 let conn = require('../common/conn')
+const tokenAuth = require('../config/tokenAuto')
 
 // 获取所有会员数据
 router.get('/getList',(req, res)=>{
